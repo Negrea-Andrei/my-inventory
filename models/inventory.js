@@ -7,7 +7,7 @@ const InventorySchema = new mongoose.Schema({
 });
 
 InventorySchema.virtual("url").get(function () {
-    return `/inventory/${this._id}`;
+    return `/store/inventory/${this._id}`;
   });
 
 module.exports = mongoose.model("Inventory", InventorySchema);

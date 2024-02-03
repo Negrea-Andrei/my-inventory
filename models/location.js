@@ -5,7 +5,7 @@ const LocationSchema = new mongoose.Schema({
 });
 
 LocationSchema.virtual("url").get(function () {
-    return `/location/${this._id}`;
+    return `/store/location/${this._id}`;
   });
 
 module.exports = mongoose.model('Location', LocationSchema);

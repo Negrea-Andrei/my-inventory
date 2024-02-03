@@ -8,7 +8,7 @@ const ProducerSchema = new Schema({
 })
 
 ProducerSchema.virtual("url").get(function () {
-    return `/producer/${this._id}`;
+    return `/store/producer/${this._id}`;
 });
 
 
