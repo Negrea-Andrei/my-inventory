@@ -2,7 +2,7 @@ const inventory = require("../models/inventory");
 const asyncHandler = require("express-async-handler");
 
 exports.index = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Site Home Page");
+  res.render("NOT IMPLEMENTED: Site Home Page");
 });
 
 exports.inventoryList = asyncHandler(async (req, res) => {
