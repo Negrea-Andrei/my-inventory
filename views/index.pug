@@ -2,4 +2,11 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to #[em Andrei's Store], #[u a place where you can find all the tools you need for your future projects.]
+
+  h1 Dynamic content
+
+  p We have !{product_number} #[strong products] from !{producer_number} #[strong producers]!
+  p Our products can be ordered from the !{location_number} #[strong locations]!
+    
+

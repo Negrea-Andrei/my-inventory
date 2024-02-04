@@ -1,8 +1,27 @@
-const inventory = require("../models/inventory");
+const Location = require("../models/location");
+const Product = require("../models/product");
+const Producer = require("../models/producer");
+
 const asyncHandler = require("express-async-handler");
 
 exports.index = asyncHandler(async (req, res, next) => {
-  res.render("NOT IMPLEMENTED: Site Home Page");
+  const [
+    numLocation,
+    numProduct,
+    numProducer
+  ] = await Promise.all([
+    Location.countDocuments({}).exec(),
+    Product.countDocuments({}).exec(),
+    Producer.countDocuments({}).exec(),
+  ]);
+
+  res.render("index", {
+    title: "Store",
+    product_number: numProduct,
+    producer_number: numProducer,
+    location_number: numLocation,
+  }
+  )
 });
 
 exports.inventoryList = asyncHandler(async (req, res) => {
