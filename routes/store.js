@@ -4,7 +4,7 @@ const router = express.Router();
 const category_controller = require("../controllers/categoryController");
 const inventory_controller = require("../controllers/inventoryController");
 const location_controller = require("../controllers/locationController");
-const producer_controller = require("../controllers/producerController");
+const manufacturer_controller = require("../controllers/manufacturerController");
 const product_controller = require("../controllers/productController");
 
 //!  Inventory
@@ -63,23 +63,23 @@ router.get("/location/:id", location_controller.locationDetail);
 
 router.get("/locations", location_controller.locationList);
 
-//! Producer
+//! Manufacturer
 
-router.get("/producer/create", producer_controller.producerCreateGet);
+router.get("/manufacturer/create", manufacturer_controller.manufacturerCreateGet);
 
-router.post("/producer/create", producer_controller.producerCreatePost);
+router.post("/manufacturer/create", manufacturer_controller.manufacturerCreatePost);
 
-router.get("/producer/:id/delete", producer_controller.producerDeleteGet);
+router.get("/manufacturer/:id/delete", manufacturer_controller.manufacturerDeleteGet);
 
-router.post("/producer/:id/delete", producer_controller.producerDeletePost);
+router.post("/manufacturer/:id/delete", manufacturer_controller.manufacturerDeletePost);
 
-router.get("/producer/:id/update", producer_controller.producerUpdateGet);
+router.get("/manufacturer/:id/update", manufacturer_controller.manufacturerUpdateGet);
 
-router.post("/producer/:id/update", producer_controller.producerUpdatePost);
+router.post("/manufacturer/:id/update", manufacturer_controller.manufacturerUpdatePost);
 
-router.get("/producer/:id", producer_controller.producerDetail);
+router.get("/manufacturer/:id", manufacturer_controller.manufacturerDetail);
 
-router.get("/producers", producer_controller.producerList);
+router.get("/manufacturers", manufacturer_controller.manufacturerList);
 
 //! Product
 

@@ -3,8 +3,12 @@ const asyncHandler = require('express-async-handler');
 
 // Display list of all product in product
 exports.productList = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: product list');
+  const allProducts = await product.find({}, "name manufacturer")
+  .sort({ name: 1 })
+  .populate("manufacturer")
+  .exec();
+
+  res.render("productList", { title: "Products", productList: allProducts }); 
 });
 
 // Display detail page for a specific product in product

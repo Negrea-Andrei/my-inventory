@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 console.log(
-    'This script populates some test products, producers, categories, inventories, and locations to your database. Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/local_library?retryWrites=true&w=majority"'
+    'This script populates some test products, manufacturers, categories, inventories, and locations to your database. Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/local_library?retryWrites=true&w=majority"'
   );
   
   // Get arguments passed on the command line
@@ -11,13 +11,13 @@ console.log(
   mongoose.set("strictQuery", false);
   
   const Product = require('./models/product');
-  const Producer = require('./models/producer');
+  const Manufacturer = require('./models/manufacturer');
   const Category = require('./models/category');
   const Inventory = require('./models/inventory');
   const Location = require('./models/location');
   
   const categories = [];
-  const producers = [];
+  const manufacturers = [];
   const products = [];
   const inventories = [];
   const locations = [];
@@ -31,7 +31,7 @@ console.log(
     await mongoose.connect(mongoDB);
     console.log('Debug: Should be connected?');
     await createCategories();
-    await createProducers();
+    await createManufacturers();
     await createLocations();
     await createProducts();
     await createInventories();
@@ -46,11 +46,11 @@ console.log(
     console.log(`Added category: ${name}`);
   }
   
-  async function producerCreate(index, name, description) {
-    const producer = new Producer({ name: name, description: description });
-    await producer.save();
-    producers[index] = producer;
-    console.log(`Added producer: ${name}`);
+  async function manufacturerCreate(index, name, description) {
+    const manufacturer = new Manufacturer({ name: name, description: description });
+    await manufacturer.save();
+    manufacturers[index] = manufacturer;
+    console.log(`Added manufacturer: ${name}`);
   }
   
   async function locationCreate(index, name) {
@@ -60,12 +60,12 @@ console.log(
     console.log(`Added location: ${name}`);
   }
   
-  async function productCreate(index, name, description, price, producer, category, location) {
+  async function productCreate(index, name, description, price, manufacturer, category, location) {
     const product = new Product({
       name: name,
       description: description,
       price: price,
-      producer: producer,
+      manufacturer: manufacturer,
       category: [category],
       location: [location],
       img: Buffer.from('Sample Image Data'),
@@ -91,12 +91,12 @@ console.log(
     ]);
   }
   
-  async function createProducers() {
-    console.log('Adding producers');
+  async function createManufacturers() {
+    console.log('Adding manufacturers');
     await Promise.all([
-      producerCreate(0, 'Tech Company', 'Leading technology manufacturer'),
-      producerCreate(1, 'Book Publisher', 'Publishing company specializing in books'),
-      producerCreate(2, 'Fashion Brand', 'Designer clothing brand'),
+      manufacturerCreate(0, 'Tech Company', 'Leading technology manufacturer'),
+      manufacturerCreate(1, 'Book Publisher', 'Publishing company specializing in books'),
+      manufacturerCreate(2, 'Fashion Brand', 'Designer clothing brand'),
     ]);
   }
   
@@ -112,9 +112,9 @@ console.log(
   async function createProducts() {
     console.log('Adding products');
     await Promise.all([
-      productCreate(0, 'Smartphone', 'High-performance mobile device', 599.99, producers[0], categories[0], locations[0]),
-      productCreate(1, 'Bestseller Book', 'Captivating book that topped the charts', 19.99, producers[1], categories[1], locations[1]),
-      productCreate(2, 'Designer Jacket', 'Stylish and comfortable jacket', 149.99, producers[2], categories[2], locations[2]),
+      productCreate(0, 'Smartphone', 'High-performance mobile device', 599.99, manufacturers[0], categories[0], locations[0]),
+      productCreate(1, 'Bestseller Book', 'Captivating book that topped the charts', 19.99, manufacturers[1], categories[1], locations[1]),
+      productCreate(2, 'Designer Jacket', 'Stylish and comfortable jacket', 149.99, manufacturers[2], categories[2], locations[2]),
     ]);
   }
   

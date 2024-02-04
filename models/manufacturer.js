@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const ProducerSchema = new Schema({
+const ManufacturerSchema = new Schema({
     name: { type: String, required: true, maxLength: 100 },
     description: { type: String, required: true, maxLength: 100 },
 })
 
-ProducerSchema.virtual("url").get(function () {
-    return `/store/producer/${this._id}`;
+ManufacturerSchema.virtual("url").get(function () {
+    return `/store/manufacturer/${this._id}`;
 });
 
 
-module.exports = mongoose.model("Producer", ProducerSchema);
+module.exports = mongoose.model("Manufacturer", ManufacturerSchema);
