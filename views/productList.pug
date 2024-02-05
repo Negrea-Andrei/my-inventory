@@ -7,7 +7,8 @@ block content
       each product in productList
         li
           a(href=product.url) #{product.name}
-          |  Manufactured by: #{product.manufacturer.name}
+          |  Manufactured by: 
+          a(href=product.manufacturer.url) #{product.manufacturer.name}
 
   else
     p There are no books.

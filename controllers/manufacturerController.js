@@ -2,9 +2,13 @@ const manufacturer = require("../models/manufacturer")
 const asyncHandler = require('express-async-handler');
 
 // Display list of all manufacturer in manufacturer
-exports.manufacturerList = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: manufacturer list');
+exports.manufacturerList = asyncHandler(async (req, res, next) => {
+  const allManufacturers = await manufacturer.find({}, "name").exec();
+
+  res.render("manufacturerList", {
+    title: "Manufacturers",
+    manufacturerList: allManufacturers,
+  });
 });
 
 // Display detail page for a specific manufacturer in manufacturer

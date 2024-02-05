@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  p Find your product in the categories
+  if categoryList.length
+    ul
+      each category in categoryList
+        li
+          a(href=category.url) #{category.name}
+  else
+    p There are no categories yet.
