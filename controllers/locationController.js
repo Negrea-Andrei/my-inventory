@@ -2,10 +2,15 @@ const location = require("../models/location")
 const asyncHandler = require('express-async-handler');
 
 // Display list of all locations in inventory
-exports.locationList = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: Location list');
+exports.locationList = asyncHandler(async (req, res, next) => {
+  const allLocations = await location.find({}, "name address").exec();
+
+  res.render("locationList", {
+    title: "Locations",
+    locationList: allLocations,
+  });
 });
+
 
 // Display detail page for a specific location in inventory
 exports.locationDetail = asyncHandler(async (req, res) => {
