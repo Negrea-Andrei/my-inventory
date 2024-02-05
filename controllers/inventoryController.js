@@ -9,11 +9,7 @@ const asyncHandler = require("express-async-handler");
 // Controller for rendering the index page
 exports.index = asyncHandler(async (req, res, next) => {
   // Getting counts of documents in each model asynchronously
-  const [
-    numLocation,
-    numProduct,
-    numManufacturer
-  ] = await Promise.all([
+  const [numLocation, numProduct, numManufacturer] = await Promise.all([
     Location.countDocuments({}).exec(),
     Product.countDocuments({}).exec(),
     Manufacturer.countDocuments({}).exec(),
@@ -28,6 +24,49 @@ exports.index = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.inventoryList = asyncHandler(async (req, res, next) => {
+  try {
+    const populatedLocations = await Location.aggregate([
+      {
+        $lookup: {
+          from: 'inventories', 
+          localField: '_id',
+          foreignField: 'location',
+          as: 'products',
+        },
+      },
+      {
+        $unwind: {
+          path: '$products',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'products.product',
+          foreignField: '_id',
+          as: 'products.product',
+        },
+      },
+      {
+        $group: {
+          _id: '$_id',
+          name: { $first: '$name' },
+          address: { $first: '$address' },
+          products: { $push: '$products' },
+        },
+      },
+    ]);
+
+    res.render('inventoryList', {
+      title: 'Products at Different Locations',
+      locationList: populatedLocations,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 // Placeholder controller for handling the inventory detail route
 exports.inventoryDetail = asyncHandler(async (req, res) => {

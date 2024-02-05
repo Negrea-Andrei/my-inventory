@@ -25,6 +25,7 @@ router.post("/inventory/:id/update", inventory_controller.inventoryUpdatePost);
 
 router.get("/inventory/:id", inventory_controller.inventoryDetail);
 
+router.get("/inventories", inventory_controller.inventoryList);
 
 //! Category
 

@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  p The inventories for each location
+  if locationList.length
+    ul
+      each location in locationList
+        li
+          a(href=`/store/location/${location._id}`) #{location.name} located at #{location.address}
+          if location.products.length
+            ul
+              each inventory in location.products
+                li
+                  a(href=inventory.product[0].url) #{inventory.product[0].name}, Quantity: #{inventory.quantity}
+          else
+            p No products at this location.
+  else
+    p There are no locations available.
