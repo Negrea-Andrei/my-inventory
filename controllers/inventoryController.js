@@ -28,10 +28,6 @@ exports.index = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Placeholder controller for handling the inventory list route
-exports.inventoryList = asyncHandler(async (req, res) => {
-  res.send("NOT IMPLEMENTED: inventory list");
-});
 
 // Placeholder controller for handling the inventory detail route
 exports.inventoryDetail = asyncHandler(async (req, res) => {
