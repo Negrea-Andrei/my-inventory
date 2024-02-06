@@ -28,6 +28,7 @@ exports.productDetail = asyncHandler(async (req, res, next) => {
     title: productList[0].name,
     manufacturer: productList[0].manufacturer,
     category: productList[0].category,
+    description: productList[0].description,
     location: productList[0].location,
     product: productList[0],
   });
