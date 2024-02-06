@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1 Title: #{product.name}
+
+  p #[strong Manufacturer: ]
+    a(href=manufacturer.url) #{manufacturer.name}
+  p #[strong Category: ]
+    each cat in category
+      a(href=cat.url) #{cat.name}
+
+  div(style='margin-left:20px;margin-top:20px')
+    h4 Locations
+      ul
+        each val in product.location
+          li
+            a(href=val.url) #{val.name} 
+            | located at: #{val.address}

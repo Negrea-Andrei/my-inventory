@@ -1,4 +1,5 @@
 const category = require("../models/category")
+const product = require("../models/product")
 const asyncHandler = require('express-async-handler');
 
 // Display list of all category in inventory
@@ -14,8 +15,22 @@ exports.categoryList = asyncHandler(async (req, res, next) => {
 
 // Display detail page for a specific category in inventory
 exports.categoryDetail = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: category detail: ' + req.params.id);
+  const [categories, products] = await Promise.all([
+    category.findById(req.params.id).exec(),
+    product.find({ category: req.params.id }, "name description").exec(),
+  ]);
+  if (categories === null) {
+    // No results.
+    const err = new Error("Category not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("categoryDetails", {
+    title: "Category",
+    category: categories,
+    productList: products,
+  });
 });
 
 // Display category create form on GET

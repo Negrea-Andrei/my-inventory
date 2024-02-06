@@ -1,0 +1,17 @@
+extends layout
+
+block content
+
+  h1 #{category.name}
+
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Products
+    if productList.length
+      dl
+        each product in productList
+          dt
+            a(href=product.url) #{product.name}
+          dd #{product.description}
+    else
+      p This category has no tools.
