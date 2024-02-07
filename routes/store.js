@@ -59,8 +59,6 @@ router.get("/location/:id/update", location_controller.locationUpdateGet);
 
 router.post("/location/:id/update", location_controller.locationUpdatePost);
 
-router.get("/location/:id", location_controller.locationDetail);
-
 router.get("/locations", location_controller.locationList);
 
 //! Manufacturer

@@ -13,31 +13,6 @@ exports.locationList = asyncHandler(async (req, res, next) => {
 });
 
 
-exports.locationDetail = asyncHandler(async (req, res, next) => {
-  const locationDetails = await location.findById(req.params.id)
-    .populate({
-      path: 'products',
-      populate: {
-        path: 'product', // Make sure 'product' matches the field name in InventorySchema
-        model: 'Product'
-      }
-    })
-    .exec();
-
-  if (!locationDetails) {
-    const err = new Error('Location not found');
-    err.status = 404;
-    return next(err);
-  }
-
-  console.log(locationDetails.products); // Log the populated products
-
-  res.render('locationDetails', {
-    title: locationDetails.name,
-    address: locationDetails.address,
-    products: locationDetails.products,
-  });
-});
 
 // Display location create form on GET
 exports.locationCreateGet = asyncHandler(async (req, res) => {
