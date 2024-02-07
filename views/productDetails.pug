@@ -15,5 +15,14 @@ block content
       ul
         each val in product.location
           li
-            a(href=val.url) #{val.name} 
+            |#{val.name} 
             | located at: #{val.address}
+
+  p #[strong Quantity: ] #{product.quantity}
+  p #[strong Status: ]
+    if product.quantity < 10
+      |  Few in stock
+    else if product.quantity === 0
+      |  Not in stock
+    else
+      |  Available

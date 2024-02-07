@@ -12,8 +12,6 @@ exports.locationList = asyncHandler(async (req, res, next) => {
   });
 });
 
-
-
 // Display location create form on GET
 exports.locationCreateGet = asyncHandler(async (req, res) => {
   // Your implementation here

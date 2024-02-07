@@ -11,21 +11,6 @@ const product_controller = require("../controllers/productController");
 
 router.get("/", inventory_controller.index);
 
-router.get("/inventory/create", inventory_controller.inventoryCreateGet);
-
-router.post("/inventory/create", inventory_controller.inventoryCreatePost);
-
-router.get("/inventory/:id/delete", inventory_controller.inventoryDeleteGet);
-
-router.post("/inventory/:id/delete", inventory_controller.inventoryDeletePost);
-
-router.get("/inventory/:id/update", inventory_controller.inventoryUpdateGet);
-
-router.post("/inventory/:id/update", inventory_controller.inventoryUpdatePost);
-
-router.get("/inventory/:id", inventory_controller.inventoryDetail);
-
-router.get("/inventories", inventory_controller.inventoryList);
 
 //! Category
 

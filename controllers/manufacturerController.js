@@ -1,4 +1,5 @@
 const manufacturer = require("../models/manufacturer")
+const product = require('../models/product');
 const asyncHandler = require('express-async-handler');
 
 // Display list of all manufacturer in manufacturer
@@ -11,12 +12,29 @@ exports.manufacturerList = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Display detail page for a specific manufacturer in manufacturer
-exports.manufacturerDetail = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: manufacturer detail: ' + req.params.id);
-});
+exports.manufacturerDetail = asyncHandler(async (req, res, next) => {
+  try {
+    const [manufacturerInfo, products] = await Promise.all([
+      manufacturer.findById(req.params.id),
+      product.find({ manufacturer: req.params.id }, 'name description'),
+    ]);
 
+    if (!manufacturerInfo) {
+      const err = new Error('Manufacturer not found');
+      err.status = 404;
+      return next(err);
+    }
+
+    res.render('manufacturerDetails', {
+      title: 'Manufacturer Detail',
+      manufacturerInfo,
+      productList: products,
+    });
+  } catch (err) {
+    // Handle other errors
+    next(err);
+  }
+});
 // Display manufacturer create form on GET
 exports.manufacturerCreateGet = asyncHandler(async (req, res) => {
   // Your implementation here

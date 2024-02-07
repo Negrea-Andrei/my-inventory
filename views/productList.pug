@@ -9,6 +9,15 @@ block content
           a(href=product.url) #{product.name}
           |  Manufactured by: 
           a(href=product.manufacturer.url) #{product.manufacturer.name}
-
+          br
+          |  Quantity: 
+          span(style=`color: ${product.quantity < 10 ? 'orange' : (product.quantity === 0 ? 'red' : 'green')};`) #{product.quantity}
+          br
+          if product.quantity < 10
+            span(style='color: orange;') - Status: Few in stock
+          else if product.quantity === 0
+            span(style='color: red;') - Status: Not in stock
+          else
+            span(style='color: green;') - Status: Available
   else
-    p There are no books.
+    p There are no products.

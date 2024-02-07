@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  if manufacturerInfo
+    h2 Manufacturer Details
+    p Manufacturer Name: #{manufacturerInfo.name}
+    p Description: #{manufacturerInfo.description}
+    h2 Associated Products
+    if productList.length
+      ul
+        each product in productList
+          li
+            a(href=product.url) #{product.name} 
+            |- Price: #{product.price}
+    else
+      p No products associated with this manufacturer.
+  else
+    p Manufacturer not found.

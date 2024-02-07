@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 
 // Display list of all product in product
 exports.productList = asyncHandler(async (req, res) => {
-  const allProducts = await product.find({}, "name manufacturer")
+  const allProducts = await product.find({}, "name manufacturer quantity")
   .sort({ name: 1 })
   .populate("manufacturer")
   .exec();

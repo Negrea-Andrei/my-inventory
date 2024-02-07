@@ -72,6 +72,7 @@ async function productCreate(index, name, description, price, manufacturer, cate
     description: description,
     price: price,
     manufacturer: manufacturer,
+    quantity: 100, // Set a default quantity or adjust as needed
     category: [category],
     location: [location],
     img: Buffer.from('Sample Image Data'),
