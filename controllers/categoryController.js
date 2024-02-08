@@ -29,7 +29,7 @@ exports.categoryDetail = asyncHandler(async (req, res) => {
 });
 
 exports.categoryCreateGet = asyncHandler(async (req, res) => {
-  res.render("categoryForm", { title: "Create category" });
+  res.render("categoryForm", { title: "Create Category" });
 });
 
 exports.categoryCreatePost = [

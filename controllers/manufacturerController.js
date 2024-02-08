@@ -1,6 +1,7 @@
 const manufacturer = require("../models/manufacturer")
 const product = require('../models/product');
 const asyncHandler = require('express-async-handler');
+const { body, validationResult } = require("express-validator");
 
 // Display list of all manufacturer in manufacturer
 exports.manufacturerList = asyncHandler(async (req, res, next) => {
@@ -26,7 +27,7 @@ exports.manufacturerDetail = asyncHandler(async (req, res, next) => {
     }
 
     res.render('manufacturerDetails', {
-      title: 'Manufacturer Detail',
+      title: manufacturerInfo.name,
       manufacturerInfo,
       productList: products,
     });
@@ -35,17 +36,45 @@ exports.manufacturerDetail = asyncHandler(async (req, res, next) => {
     next(err);
   }
 });
-// Display manufacturer create form on GET
+
 exports.manufacturerCreateGet = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: manufacturer create GET');
+  res.render("manufacturerForm", { title: "Create Manufacturer" });
 });
 
-// Handle manufacturer create on POST
-exports.manufacturerCreatePost = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: manufacturer create POST');
-});
+exports.manufacturerCreatePost = [
+  body("name", "Manufacturer name must contain at least 3 characters").trim().isLength({ min: 3 }),
+  body("description", "Description must contain at least 3 characters").trim().isLength({ min: 3 }),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const manufacturerCreate = new manufacturer({
+      name: req.body.name,
+      description: req.body.description,
+    });
+
+    if (!errors.isEmpty()) {
+      res.render("manufacturerForm", {
+        title: "Create Manufacturer",
+        manufacturer: manufacturerCreate,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const manufacturerExists = await manufacturer.findOne({
+        name: req.body.name,
+        description: req.body.description,
+      }).exec();
+
+      if (manufacturerExists) {
+        res.redirect(manufacturerExists.url);
+      } else {
+        await manufacturerCreate.save();
+        res.redirect(manufacturerCreate.url);
+      }
+    }
+  }),
+];
 
 // Display manufacturer delete form on GET
 exports.manufacturerDeleteGet = asyncHandler(async (req, res) => {

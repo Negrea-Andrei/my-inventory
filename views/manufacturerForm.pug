@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST')
+    div.form-group
+      label(for='name') Manufacturer Name:
+      input#name.form-control(type='text', name='name' required value=(undefined===manufacturer ? '' : manufacturer.name))
+
+    div.form-group
+      label(for='description') Description:
+      textarea#description.form-control(type='text', name='description' required)= (undefined===manufacturer ? '' : manufacturer.description)
+
+    button.btn.btn-primary(type='submit') Submit
