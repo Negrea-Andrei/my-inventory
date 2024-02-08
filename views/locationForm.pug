@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST')
+    div.form-group
+      label(for='name') Location Name:
+      input#name.form-control(type='text', name='name' required value=(undefined===location ? '' : location.name))
+
+    div.form-group
+      label(for='address') Address:
+      input#address.form-control(type='text', name='address' required value=(undefined===location ? '' : location.address))
+
+    button.btn.btn-primary(type='submit') Submit
