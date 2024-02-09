@@ -81,9 +81,9 @@ exports.productCreatePost = [
           img: req.file ? req.file.buffer : null,
       });
 
-      console.log(productCreate)
+      console.log("1")
 
-      if (!errors.isEmpty()) {
+      if (!errors) {
           const manufacturers = await manufacturer.find();
           const categories = await category.find();
           const locations = await location.find();
@@ -97,6 +97,7 @@ exports.productCreatePost = [
           });
           return;
       } else {
+        console.log("2")
           const existingProduct = await product.findOne({
               name: req.body.name,
               description: req.body.description,
@@ -109,8 +110,10 @@ exports.productCreatePost = [
           }).exec();
 
           if (existingProduct) {
+            console.log("3")
               res.redirect(existingProduct.url);
           } else {
+            console.log("4")
               await productCreate.save();
               res.redirect(productCreate.url);
           }
