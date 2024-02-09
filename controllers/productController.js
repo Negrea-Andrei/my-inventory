@@ -1,4 +1,10 @@
 const product = require("../models/product")
+const manufacturer = require('../models/manufacturer');
+const category = require('../models/category');
+const location = require('../models/location');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
+const { body, validationResult } = require("express-validator");
 const asyncHandler = require('express-async-handler');
 
 // Display list of all product in product
@@ -13,11 +19,14 @@ exports.productList = asyncHandler(async (req, res) => {
 
 // Display detail page for a specific product in product
 exports.productDetail = asyncHandler(async (req, res, next) => {
-  const productList = await Promise.all([
-    product.findById(req.params.id).populate("manufacturer").populate("category").populate("location").exec(),
-  ]);
+  const productDetails = await product
+    .findById(req.params.id)
+    .populate("manufacturer")
+    .populate("category")
+    .populate("location")
+    .exec();
 
-  if (productList[0] === null) {
+  if (!productDetails) {
     // No results.
     const err = new Error("Product not found");
     err.status = 404;
@@ -25,26 +34,89 @@ exports.productDetail = asyncHandler(async (req, res, next) => {
   }
 
   res.render("productDetails", {
-    title: productList[0].name,
-    manufacturer: productList[0].manufacturer,
-    category: productList[0].category,
-    description: productList[0].description,
-    location: productList[0].location,
-    product: productList[0],
+    title: productDetails.name,
+    manufacturer: productDetails.manufacturer,
+    category: productDetails.category,
+    description: productDetails.description,
+    location: productDetails.location,
+    product: productDetails,
   });
 });
 
-// Display product create form on GET
 exports.productCreateGet = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: product create GET');
+  const manufacturers = await manufacturer.find();
+  const categories = await category.find();
+  const locations = await location.find();
+
+  res.render("productForm", {
+      title: "Create Product",
+      manufacturers,
+      categories,
+      locations,
+  });
 });
 
-// Handle product create on POST
-exports.productCreatePost = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: product create POST');
-});
+exports.productCreatePost = [
+  body("name", "Product name is required").trim().notEmpty(),
+  body("description", "Product description is required").trim().notEmpty(),
+  body("price", "Invalid price").isFloat({ min: 0, max: 4000 }),
+  body("manufacturer", "Invalid manufacturer").isMongoId(),
+  body("quantity", "Invalid quantity").isInt({ min: 0, max: 4000 }),
+  body("category.*", "Invalid category").isMongoId(),
+  body("location", "Invalid location").isMongoId(),
+
+  upload.single('img'),
+
+  asyncHandler(async (req, res, next) => {
+      const errors = validationResult(req);
+
+      const productCreate = new product({
+          name: req.body.name,
+          description: req.body.description,
+          price: req.body.price,
+          manufacturer: req.body.manufacturer,
+          quantity: req.body.quantity,
+          category: req.body.category,
+          location: req.body.location,
+          img: req.file ? req.file.buffer : null,
+      });
+
+      console.log(productCreate)
+
+      if (!errors.isEmpty()) {
+          const manufacturers = await manufacturer.find();
+          const categories = await category.find();
+          const locations = await location.find();
+
+          res.render("productForm", {
+              title: "Create Product",
+              manufacturers,
+              categories,
+              locations,
+              errors: errors.array(),
+          });
+          return;
+      } else {
+          const existingProduct = await product.findOne({
+              name: req.body.name,
+              description: req.body.description,
+              price: req.body.price,
+              manufacturer: req.body.manufacturer,
+              quantity: req.body.quantity,
+              category: req.body.category,
+              location: req.body.location,
+              img: req.file ? req.file.buffer : null,
+          }).exec();
+
+          if (existingProduct) {
+              res.redirect(existingProduct.url);
+          } else {
+              await productCreate.save();
+              res.redirect(productCreate.url);
+          }
+      }
+  }),
+];
 
 // Display product delete form on GET
 exports.productDeleteGet = asyncHandler(async (req, res) => {

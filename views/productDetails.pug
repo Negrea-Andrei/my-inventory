@@ -26,3 +26,6 @@ block content
       |  Not in stock
     else
       |  Available
+
+  if product.img
+    img(src=`data:image/jpeg;base64,${product.img.toString('base64')}`, alt="Product Image")
