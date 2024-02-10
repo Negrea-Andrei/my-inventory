@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1= title
+
+  if message
+    p(style="color: red;")= message
+
+  p Do you really want to delete this Manufacturer?
+
+  if productList.length > 0
+    h3 Products associated with this Manufacturer:
+    ul
+      each product in productList
+        li
+          a(href=product.url)= product.name
+
+  form(method='POST')
+    div.form-group
+      input#manufacturerId.form-control(type='hidden', name='manufacturerId', value=manufacturer._id)
+
+    button.btn.btn-primary(type='submit') Delete Manufacturer

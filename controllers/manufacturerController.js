@@ -76,16 +76,62 @@ exports.manufacturerCreatePost = [
   }),
 ];
 
-// Display manufacturer delete form on GET
 exports.manufacturerDeleteGet = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: manufacturer delete GET');
+  try {
+    const manufacturerId = req.params.id;
+
+    const [manufacturerToDelete, productList] = await Promise.all([
+      manufacturer.findById(manufacturerId).exec(),
+      product.find({ manufacturer: manufacturerId }, 'name').exec(),
+    ]);
+
+    if (!manufacturerToDelete) {
+      res.status(404).send('Manufacturer not found');
+      return;
+    }
+
+    res.render('manufacturerDelete', {
+      title: 'Delete Manufacturer',
+      manufacturer: manufacturerToDelete,
+      productList: productList || [],
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-// Handle manufacturer delete on POST
 exports.manufacturerDeletePost = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: manufacturer delete POST');
+  try {
+    const manufacturerId = req.params.id;
+
+    const [manufacturerToDelete, productList] = await Promise.all([
+      manufacturer.findById(manufacturerId).exec(),
+      product.find({ manufacturer: manufacturerId }, 'name').exec(),
+    ]);
+
+    if (!manufacturerToDelete) {
+      res.status(404).send('Manufacturer not found');
+      return;
+    }
+
+    if (productList.length > 0) {
+      res.render('manufacturerDelete', {
+        title: 'Delete Manufacturer',
+        manufacturer: manufacturerToDelete,
+        productList: productList,
+        message: 'Cannot delete. Products associated with this Manufacturer.',
+      });
+      return;
+    }
+
+    // Delete the manufacturer if no associated products
+    await manufacturer.deleteOne({ _id: manufacturerId });
+    res.redirect('/store/manufacturers');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 // Display manufacturer update form on GET
