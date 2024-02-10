@@ -1,21 +1,25 @@
 extends layout
 
 block content
-
   h1 #{category.name}
 
   div(style='margin-left:20px;margin-top:20px')
-
     h4 Products
-    if productList.length
+
+    if productList.length > 0
       dl
         each product in productList
           dt
             a(href=product.url) #{product.name}
           dd #{product.description}
+
+      p(style="color: red;") Delete the associated products first.
+
     else
       p This category has no tools.
-  hr
+  
+  form(method='POST')
+    div.form-group
+      input#categoryId.form-control(type='hidden', name='categoryId', value=category._id)
 
-  p
-    a(href=`${category.url}/delete`) Delete category
+    button.btn.btn-primary(type='submit') Delete Category

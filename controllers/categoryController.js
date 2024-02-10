@@ -61,11 +61,69 @@ exports.categoryCreatePost = [
 ];
 
 exports.categoryDeleteGet = asyncHandler(async (req, res) => {
-  res.send('NOT IMPLEMENTED: category delete GET');
+  try {
+    const [theCategory, associatedProducts] = await Promise.all([
+      category.findById(req.params.id).exec(),
+      product.find({ category: req.params.id }, 'name description').exec(),
+    ]);
+
+    if (!theCategory) {
+      res.status(404).send('Category not found');
+      return;
+    }
+
+    if (associatedProducts.length > 0) {
+      res.render('categoryDelete', {
+        title: 'Delete Category',
+        category: theCategory,
+        productList: associatedProducts || [],
+        message: 'Cannot delete category as it is associated with products. Delete the associated products first.',
+      });
+    } else {
+      res.render('categoryDelete', {
+        title: 'Delete Category',
+        category: theCategory,
+        productList: [], // Ensure productList is an array
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
+// Handle Category delete on POST
 exports.categoryDeletePost = asyncHandler(async (req, res) => {
-  res.send('NOT IMPLEMENTED: category delete POST');
+  try {
+    const categoryId = req.params.id;
+
+    const [categoryToDelete, productList] = await Promise.all([
+      category.findById(categoryId).exec(),
+      product.find({ category: categoryId }, 'name').exec(),
+    ]);
+
+    if (!categoryToDelete) {
+      res.status(404).send('Category not found');
+      return;
+    }
+
+    if (productList.length > 0) {
+      res.render('categoryDelete', {
+        title: 'Delete Category',
+        category: categoryToDelete,
+        productList: productList,
+        message: 'Cannot delete. Products associated with this Category.',
+      });
+      return;
+    }
+
+    // Delete the category if no associated products
+    await category.deleteOne({ _id: categoryId });
+    res.redirect('/store/categories');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 exports.categoryUpdateGet = asyncHandler(async (req, res) => {
