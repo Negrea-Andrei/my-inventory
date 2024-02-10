@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const LocationSchema = new mongoose.Schema({
   name: { type: String, required: true },
   address: { type: String, required: true },
-  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Inventory' }],
+  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
 });
 
 LocationSchema.virtual('url').get(function () {

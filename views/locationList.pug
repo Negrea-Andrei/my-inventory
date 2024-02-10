@@ -7,7 +7,7 @@ block content
     ul
       each location in locationList
         li
-          a #{location.name} 
+          a(href=location.url) #{location.name} 
           | located at #{location.address}
   else
     p There are no locations available.

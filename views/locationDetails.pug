@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  p Address: #{address}
+
+  h2 Products in this Location:
+  each product in products
+    p
+      | Product: 
+      a(href=`/store/product/${product._id}`) #{product.name}
+      br
+      | Price: #{product.price}
+      br
+      | Other Product Information: #{product.description}
+      br
