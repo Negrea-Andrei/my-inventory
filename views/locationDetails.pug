@@ -14,3 +14,13 @@ block content
       br
       | Other Product Information: #{product.description}
       br
+
+  if locationInfo
+    h2 Location Details
+    p Location Name: #{locationInfo.name}
+    p Address: #{locationInfo.address}
+    
+    p
+      a(href=`${locationInfo.url}/delete`) Delete location
+  else
+    p Location not found.

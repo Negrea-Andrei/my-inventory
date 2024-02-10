@@ -1,0 +1,34 @@
+extends layout
+
+block content
+  h1= title
+  p Address: #{address}
+
+  h2 Products in this Location:
+  if products
+    each product in products
+      p
+        | Product: 
+        a(href=`/store/product/${product._id}`) #{product.name}
+        br
+        | Price: #{product.price}
+        br
+        | Other Product Information: #{product.description}
+        br
+  else
+    p No products in this location.
+
+  if locationInfo
+    h2 Location Details
+    p Location Name: #{locationInfo.name}
+    p Address: #{locationInfo.address}
+    
+    if message
+      p(style="color: red;")= message
+
+    form(action=`/store/location/${locationInfo._id}/delete`, method='POST')
+      button.btn.btn-primary(type='submit') Delete Location
+
+  else
+    p Location not found.
+  hr
