@@ -121,17 +121,46 @@ exports.productCreatePost = [
   }),
 ];
 
-// Display product delete form on GET
 exports.productDeleteGet = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: product delete GET');
+  try {
+    const theProduct = await product.findById(req.params.id).exec();
+
+    if (!theProduct) {
+      // No results.
+      res.redirect("/products");
+      return;
+    }
+
+    res.render('productDelete', {
+      title: 'Delete Product',
+      product: theProduct,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 // Handle product delete on POST
 exports.productDeletePost = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: product delete POST');
+  try {
+    const theProduct = await product.findById(req.params.id).exec();
+
+    if (!theProduct) {
+      // No results.
+      res.redirect("/store/products");
+      return;
+    }
+
+    // Delete the product and redirect to the list of products.
+    await product.deleteOne({ _id: req.body.productId })
+    res.redirect("/store/products");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
+
 
 // Display product update form on GET
 exports.productUpdateGet = asyncHandler(async (req, res) => {

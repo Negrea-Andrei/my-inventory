@@ -29,3 +29,7 @@ block content
 
   if product.img
     img(src=`data:image/jpeg;base64,${product.img.toString('base64')}`, alt="Product Image")
+  hr
+
+  p
+    a(href=`${product.url}/delete`) Delete product

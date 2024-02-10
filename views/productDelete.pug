@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1 Delete Product: #{product.name}
+
+  if errorMessage
+    p(style="color: red;")= errorMessage
+
+  p Do you really want to delete this Product?
+
+    form(method='POST')
+      div.form-group
+        input#productId.form-control(type='hidden', name='productId', value=product._id )
+
+      button.btn.btn-primary(type='submit') Delete Product
