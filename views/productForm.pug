@@ -44,7 +44,9 @@ block content
 
     div.form-group
       label(for="img") Product Image:
-      input#img.form-control(type="file", name="img", accept="image/*" required)
+      if product && product.img
+        img(src=`data:image/jpeg;base64,${product.img.toString('base64')}`, alt="Product Image")
+      input#img.form-control(type="file", name="img", accept="image/*")
 
     div.form-group
       button.btn.btn-primary(type="submit") Create Product

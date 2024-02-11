@@ -163,13 +163,122 @@ exports.productDeletePost = asyncHandler(async (req, res) => {
 
 
 // Display product update form on GET
-exports.productUpdateGet = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: product update GET');
+exports.productUpdateGet = asyncHandler(async (req, res, next) => {
+  try {
+    // Fetch the product details for the given ID
+    const productDetails = await product
+      .findById(req.params.id)
+      .populate("manufacturer")
+      .populate("category")
+      .populate("location")
+      .exec();
+
+    if (!productDetails) {
+      // Product not found
+      const err = new Error("Product not found");
+      err.status = 404;
+      return next(err);
+    }
+
+    // Fetch manufacturers, categories, and locations for dropdowns
+    const manufacturers = await manufacturer.find();
+    const categories = await category.find();
+    const locations = await location.find();
+
+    // Render the product update form with fetched data
+    res.render("productForm", {
+      title: `Update ${productDetails.name}`,
+      product: productDetails,
+      manufacturers,
+      categories,
+      locations,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 // Handle product update on POST
-exports.productUpdatePost = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: product update POST');
-});
+exports.productUpdatePost = [
+  body("name", "Product name is required").trim().notEmpty(),
+  body("description", "Product description is required").trim().notEmpty(),
+  body("price", "Invalid price").isFloat({ min: 0, max: 4000 }),
+  body("manufacturer", "Invalid manufacturer").isMongoId(),
+  body("quantity", "Invalid quantity").isInt({ min: 0, max: 4000 }),
+  body("category.*", "Invalid category").isMongoId(),
+  body("location", "Invalid location").isMongoId(),
+
+  upload.single('img'),
+
+  asyncHandler(async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+
+      // Fetch valid categories for dropdown
+      const categories = await category.find();
+
+      // Ensure req.body.category is an array
+      const selectedCategories = Array.isArray(req.body.category) ? req.body.category : [req.body.category];
+
+      // Check if the selected categories are valid
+      const invalidCategories = selectedCategories.filter(
+        categoryId => !categories.some(category => category._id.equals(categoryId))
+      );
+
+      if (invalidCategories.length > 0) {
+        errors.array().push({
+          msg: "Invalid category selected",
+          param: "category",
+          value: invalidCategories,
+        });
+      }
+
+      if (errors.isEmpty()) {
+        // There are validation errors, re-render the form with errors
+        const manufacturers = await manufacturer.find();
+        const locations = await location.find();
+
+        return res.render("productForm.pug", {
+          title: "Update Product",
+          product: req.body,
+          manufacturers,
+          categories,
+          locations,
+          errors: errors.array(),
+        });
+      }
+
+      // Log the received form data for debugging
+      console.log('Received Form Data:', req.body);
+
+      // Find the existing product to get the current image data
+      const existingProduct = await product.findById(req.params.id);
+
+      // Update the product with new data, including the new image or the existing image
+      const updatedProduct = await product.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          name: req.body.name,
+          description: req.body.description,
+          price: req.body.price,
+          manufacturer: req.body.manufacturer,
+          quantity: req.body.quantity,
+          category: selectedCategories,
+          location: req.body.location,
+          img: req.file ? req.file.buffer : (existingProduct ? existingProduct.img : undefined),
+        },
+        { new: true, upsert: false } // Do not create a new document
+      );
+
+      // Log the updated product for debugging
+      console.log('Updated Product:', updatedProduct);
+
+      // Redirect to the product detail page after a successful update
+      res.redirect(updatedProduct.url);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    }
+  }),
+];
