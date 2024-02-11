@@ -127,9 +127,51 @@ exports.categoryDeletePost = asyncHandler(async (req, res) => {
 });
 
 exports.categoryUpdateGet = asyncHandler(async (req, res) => {
-  res.send('NOT IMPLEMENTED: category update GET');
+  const categoryId = req.params.id;
+
+  // Fetch category details
+  const categoryDetails = await category.findById(categoryId);
+
+  if (!categoryDetails) {
+    res.status(404).send('Category not found');
+    return;
+  }
+
+  res.render('categoryForm', {
+    title: `Update Category: ${categoryDetails.name}`,
+    category: categoryDetails,
+  });
 });
 
-exports.categoryUpdatePost = asyncHandler(async (req, res) => {
-  res.send('NOT IMPLEMENTED: category update POST');
-});
+// Handle category update on POST
+exports.categoryUpdatePost = [
+  body("name", "Category name must contain at least 3 characters").trim().isLength({ min: 3 }),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const categoryId = req.params.id;
+
+    if (!errors.isEmpty()) {
+      const categoryDetails = await category.findById(categoryId);
+      res.render("categoryUpdateForm", {
+        title: `Update Category: ${categoryDetails.name}`,
+        category: categoryDetails,
+        errors: errors.array(),
+      });
+      return;
+    }
+
+    // Update the category with new data
+    const updatedCategory = await category.findByIdAndUpdate(
+      categoryId,
+      {
+        name: req.body.name,
+      },
+      { new: true } // Return the updated document
+    );
+
+    // Redirect to the category detail page after a successful update
+    res.redirect(updatedCategory.url);
+  }),
+];

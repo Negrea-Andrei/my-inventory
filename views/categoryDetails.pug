@@ -1,7 +1,6 @@
 extends layout
 
 block content
-
   h1 #{category.name}
 
   div(style='margin-left:20px;margin-top:20px')
@@ -16,6 +15,7 @@ block content
     else
       p This category has no tools.
   hr
-
   p
-    a(href=`${category.url}/delete`) Delete category
+    a(href=`${category.url}/delete`) Delete Category
+  p
+    a(href=`${category.url}/update`) Update Category
