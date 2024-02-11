@@ -15,9 +15,10 @@ block content
             |- Price: #{product.price}
     else
       p No products associated with this manufacturer.
+    hr
+    p
+      a(href=`${manufacturerInfo.url}/delete`) Delete Manufacturer
+    p
+      a(href=`${manufacturerInfo.url}/update`) Update Manufacturer
   else
     p Manufacturer not found.
-  hr
-
-  p
-    a(href=`${manufacturerInfo.url}/delete`) Delete manufacturer

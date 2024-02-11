@@ -136,12 +136,61 @@ exports.manufacturerDeletePost = asyncHandler(async (req, res) => {
 
 // Display manufacturer update form on GET
 exports.manufacturerUpdateGet = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: manufacturer update GET');
+  try {
+    // Fetch the manufacturer details for the given ID
+    const manufacturerDetails = await manufacturer.findById(req.params.id).exec();
+
+    if (!manufacturerDetails) {
+      // Manufacturer not found
+      const err = new Error('Manufacturer not found');
+      err.status = 404;
+      return next(err);
+    }
+
+    // Render the manufacturer update form with fetched data
+    res.render('manufacturerForm', {
+      title: `Update ${manufacturerDetails.name}`,
+      manufacturer: manufacturerDetails,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 // Handle manufacturer update on POST
-exports.manufacturerUpdatePost = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: manufacturer update POST');
-});
+exports.manufacturerUpdatePost = [
+  body('name', 'Manufacturer name must contain at least 3 characters').trim().isLength({ min: 3 }),
+  body('description', 'Description must contain at least 3 characters').trim().isLength({ min: 3 }),
+
+  asyncHandler(async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        // There are validation errors, re-render the form with errors
+        return res.render('manufacturerForm', {
+          title: `Update ${req.body.name}`,
+          manufacturer: req.body,
+          errors: errors.array(),
+        });
+      }
+
+      // Update the manufacturer with new data
+      const updatedManufacturer = await manufacturer.findByIdAndUpdate(
+        req.params.id,
+        {
+          name: req.body.name,
+          description: req.body.description,
+        },
+        { new: true } // Return the updated document
+      );
+
+      // Redirect to the manufacturer detail page after a successful update
+      res.redirect(`/store/manufacturer/${updatedManufacturer._id}`);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    }
+  }),
+];
