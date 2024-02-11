@@ -19,8 +19,10 @@ block content
     h2 Location Details
     p Location Name: #{locationInfo.name}
     p Address: #{locationInfo.address}
-    
+    hr    
     p
       a(href=`${locationInfo.url}/delete`) Delete location
+    p
+    a(href=`${locationInfo.url}/update`) Update location
   else
     p Location not found.

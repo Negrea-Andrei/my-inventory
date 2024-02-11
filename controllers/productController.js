@@ -249,8 +249,6 @@ exports.productUpdatePost = [
         });
       }
 
-      // Log the received form data for debugging
-      console.log('Received Form Data:', req.body);
 
       // Find the existing product to get the current image data
       const existingProduct = await product.findById(req.params.id);
@@ -271,8 +269,6 @@ exports.productUpdatePost = [
         { new: true, upsert: false } // Do not create a new document
       );
 
-      // Log the updated product for debugging
-      console.log('Updated Product:', updatedProduct);
 
       // Redirect to the product detail page after a successful update
       res.redirect(updatedProduct.url);

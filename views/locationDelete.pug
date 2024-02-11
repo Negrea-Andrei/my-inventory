@@ -2,7 +2,6 @@ extends layout
 
 block content
   h1= title
-  p Address: #{address}
 
   h2 Products in this Location:
   if products
@@ -19,9 +18,6 @@ block content
     p No products in this location.
 
   if locationInfo
-    h2 Location Details
-    p Location Name: #{locationInfo.name}
-    p Address: #{locationInfo.address}
     
     if message
       p(style="color: red;")= message

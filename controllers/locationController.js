@@ -157,12 +157,64 @@ exports.locationDeletePost = asyncHandler(async (req, res) => {
 
 // Display location update form on GET
 exports.locationUpdateGet = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: Location update GET');
+  try {
+    // Fetch location details for the given ID
+    const locationDetails = await location.findById(req.params.id).exec();
+
+    if (!locationDetails) {
+      // Location not found
+      const err = new Error('Location not found');
+      err.status = 404;
+      return next(err);
+    }
+
+    // Render the location update form with fetched data
+    res.render('locationForm', {
+      title: `Update ${locationDetails.name}`,
+      location: locationDetails,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 // Handle location update on POST
-exports.locationUpdatePost = asyncHandler(async (req, res) => {
-  // Your implementation here
-  res.send('NOT IMPLEMENTED: Location update POST');
-});
+exports.locationUpdatePost = [
+  body('name', 'Location name is required').trim().notEmpty(),
+  body('address', 'Address is required').trim().notEmpty(),
+  body('password', 'Admin password is required').trim().notEmpty(),
+
+  asyncHandler(async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+
+      // Check if the password is provided and correct
+      const password = req.body.password;
+      if (!password || password !== process.env.PASSWORD) {
+        res.render('locationForm', {
+          title: `Update Location: ${req.body.name}`,
+          location: req.body,
+          errors: [{ msg: 'Incorrect password. Location update requires admin access.' }],
+        });
+        return;
+      }
+
+      // Update the location with new data
+      const updatedLocation = await location.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          name: req.body.name,
+          address: req.body.address,
+        },
+        { new: true, upsert: false } // Do not create a new document
+      );
+
+      // Redirect to the location detail page after a successful update
+      res.redirect(`/store/location/${updatedLocation._id}`);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+    }
+  }),
+];
