@@ -1,35 +1,62 @@
 extends layout
+
 block content
-  h1 Title: #{product.name}
+  div.container
+    h1(class='mt-4') Title: #{product.name}
 
-  p #[strong Manufacturer: ]
-    a(href=manufacturer.url) #{manufacturer.name}
-  p #[strong Category: ]
-    each cat in product.category
-      a(href=cat.url) #{cat.name}
-      |;  
-  p #[strong Description: ] #{product.description}  
-  
-  p #[strong Locations]: 
-   each loc in product.location
-       | #{loc.name} 
-       | located at: #{loc.address}
+    div.card.mt-4
+      div.card-body
+        h5.card-title Manufacturer:
+        a(href=manufacturer.url) #{manufacturer.name}
 
-  p #[strong Quantity: ] #{product.quantity}
-  p #[strong Status: ]
-    if product.quantity < 10
-      |  Few in stock
-    else if product.quantity === 0
-      |  Not in stock
-    else
-      |  Available
+    div.card.mt-4
+      div.card-body
+        h5.card-title Category:
+        each cat in product.category
+          a(href=cat.url) #{cat.name}
+          |;&nbsp;
 
-  if product.img
-    img(src=`data:image/jpeg;base64,${product.img.toString('base64')}`, alt="Product Image")
+    div.card.mt-4
+      div.card-body
+        h5.card-title Description:
+        p.card-text #{product.description}
 
-  hr
-  p
-    a(href=`${product.url}/delete`) Delete product
-  
-  p
-    a(href=`${product.url}/update`) Update product
+    div.card.mt-4
+      div.card-body
+        h5.card-title Locations:
+        each loc in product.location
+          p.card-text
+            | #{loc.name}
+            | located at: #{loc.address}
+
+    div.card.mt-4
+      div.card-body
+        h5.card-title Quantity:
+        p.card-text #{product.quantity}
+
+    div.card.mt-4
+      div.card-body
+        h5.card-title Status:
+        p.card-text
+          | 
+          if product.quantity < 10
+            | Few in stock
+          else if product.quantity === 0
+            | Not in stock
+          else
+            | Available
+
+    if product.img
+      img(src=`data:image/jpeg;base64,${product.img.toString('base64')}`, alt="Product Image", class='img-fluid mt-4')
+
+    hr(class='mt-4')
+
+    div.card.mt-4
+      div.card-body
+        p.card-text
+          a(href=`${product.url}/delete`, class='btn btn-danger') Delete product
+
+    div.card.mt-4
+      div.card-body
+        p.card-text
+          a(href=`${product.url}/update`, class='btn btn-primary') Update product

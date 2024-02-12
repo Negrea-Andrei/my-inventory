@@ -1,28 +1,43 @@
 extends layout
 
 block content
-  h1= title
-  p Address: #{address}
+  div.container
+    h1(class='mt-4') #{title}
 
-  h2 Products in this Location:
-  each product in products
-    p
-      | Product: 
-      a(href=`/store/product/${product._id}`) #{product.name}
-      br
-      | Price: #{product.price}
-      br
-      | Other Product Information: #{product.description}
-      br
+    p(class='mt-3') Address: #{address}
 
-  if locationInfo
-    h2 Location Details
-    p Location Name: #{locationInfo.name}
-    p Address: #{locationInfo.address}
-    hr    
-    p
-      a(href=`${locationInfo.url}/delete`) Delete location
-    p
-    a(href=`${locationInfo.url}/update`) Update location
-  else
-    p Location not found.
+    h2(class='mt-4') Products in this Location:
+    each product in products
+      div.card.mt-2
+        div.card-body
+          h5.card-title
+            | Product: 
+            a(href=`/store/product/${product._id}`) #{product.name}
+
+          p.card-text
+            | Price: #{product.price}
+            br
+            | Other Product Information: #{product.description}
+
+    if locationInfo
+      hr(class='mt-4')
+
+      div.card.mt-4
+        div.card-body
+          h2.card-title Location Details
+          p.card-text Location Name: #{locationInfo.name}
+          p.card-text Address: #{locationInfo.address}
+
+      hr(class='mt-4')
+
+      div.card.mt-4
+        div.card-body
+          p.card-text
+            a(href=`${locationInfo.url}/delete`, class='btn btn-danger') Delete location
+
+      div.card.mt-4
+        div.card-body
+          p.card-text
+            a(href=`${locationInfo.url}/update`, class='btn btn-primary') Update location
+    else
+      p Location not found.

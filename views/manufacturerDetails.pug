@@ -1,24 +1,37 @@
 extends layout
 
 block content
-  h1= title
-  if manufacturerInfo
-    h2 Manufacturer Details
-    p Manufacturer Name: #{manufacturerInfo.name}
-    p Description: #{manufacturerInfo.description}
-    h2 Associated Products
-    if productList.length
-      ul
-        each product in productList
-          li
-            a(href=product.url) #{product.name} 
-            |- Price: #{product.price}
+  div.container
+    h1(class='mt-4') #{title}
+
+    if manufacturerInfo
+      div.card.mt-4
+        div.card-body
+          h2(class='card-title') Manufacturer Details
+          p Manufacturer Name: #{manufacturerInfo.name}
+          p Description: #{manufacturerInfo.description}
+
+      div.card.mt-4
+        div.card-body
+          h2(class='card-title') Associated Products
+          if productList.length
+            ul.list-group
+              each product in productList
+                li.list-group-item
+                  a(href=product.url) #{product.name}
+          else
+            p No products associated with this manufacturer.
+
+      hr(class='mt-4')
+
+      div.card.mt-4
+        div.card-body
+          p.card-text
+            a(href=`${manufacturerInfo.url}/delete`, class='btn btn-danger') Delete Manufacturer
+
+      div.card.mt-4
+        div.card-body
+          p.card-text
+            a(href=`${manufacturerInfo.url}/update`, class='btn btn-primary') Update Manufacturer
     else
-      p No products associated with this manufacturer.
-    hr
-    p
-      a(href=`${manufacturerInfo.url}/delete`) Delete Manufacturer
-    p
-      a(href=`${manufacturerInfo.url}/update`) Update Manufacturer
-  else
-    p Manufacturer not found.
+      p Manufacturer not found.

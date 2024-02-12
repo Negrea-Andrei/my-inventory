@@ -2,11 +2,11 @@ extends layout
 
 block content
   h1= title
-  p We are collaborating with the next companies
+  p We are collaborating with the following companies.
   if manufacturerList.length
-    ul
+    ul.list-group
       each manufacturer in manufacturerList
-        li
-          a(href=manufacturer.url) #{manufacturer.name}
+        li.list-group-item
+          a(href=manufacturer.url, class='d-block h4 mb-1') #{manufacturer.name}
   else
-    p There are no manufacturer yet.
+    p There are no manufacturers yet.

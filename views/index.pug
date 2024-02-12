@@ -1,12 +1,11 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #[em Andrei's Store], #[u a place where you can find all the tools you need for your future projects.]
+  div(class='container text-center mt-5')
+    h1.display-4.mb-4= title
+    p.lead.mb-4 Welcome to #[em Andrei's Store],  a place where you can find all the tools you need for your future projects.
 
-  h1 Dynamic content
+    h1.display-5.mb-4 Dynamic Content
 
-  p We have !{product_number} #[strong products] from !{manufacturer_number} #[strong manufacturer]!
-  p Our products can be ordered from the !{location_number} #[strong locations]!
-    
-
+    p.lead.mb-4 We currently have !{product_number} products from !{manufacturer_number} manufacturers!
+    p.lead.mb-4 Our products can be ordered from the !{location_number} locations!

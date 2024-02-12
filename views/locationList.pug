@@ -2,12 +2,12 @@ extends layout
 
 block content
   h1= title
-  p You can find our store at the following locations
+  p You can find our store at the following locations.
   if locationList.length
-    ul
+    ul.list-group
       each location in locationList
-        li
-          a(href=location.url) #{location.name} 
-          | located at #{location.address}
+        li.list-group-item
+          a(href=location.url, class='d-block h4 mb-1') #{location.name}
+          small.text-muted located at #{location.address}
   else
     p There are no locations available.

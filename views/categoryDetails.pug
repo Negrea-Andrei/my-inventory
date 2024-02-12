@@ -1,21 +1,28 @@
 extends layout
 
 block content
-  h1 #{category.name}
+  div.container
+    h1.mt-4 #{category.name}
 
-  div(style='margin-left:20px;margin-top:20px')
+    div(style='margin-left:20px;margin-top:20px')
+      h4 Products
+      if productList.length
+        dl
+          each product in productList
+            dt
+              a(href=product.url) #{product.name}
+            dd #{product.description}
+      else
+        p This category has no tools.
 
-    h4 Products
-    if productList.length
-      dl
-        each product in productList
-          dt
-            a(href=product.url) #{product.name}
-          dd #{product.description}
-    else
-      p This category has no tools.
-  hr
-  p
-    a(href=`${category.url}/delete`) Delete Category
-  p
-    a(href=`${category.url}/update`) Update Category
+    hr(class='mt-4')
+
+    div.card.mt-4
+      div.card-body
+        p.card-text
+          a(href=`${category.url}/delete`, class='btn btn-danger') Delete Category
+
+    div.card.mt-4
+      div.card-body
+        p.card-text
+          a(href=`${category.url}/update`, class='btn btn-primary') Update Category

@@ -2,11 +2,13 @@ extends layout
 
 block content
   h1= title
-  p Find your product in the categories
+  p Find your product in the following categories.
   if categoryList.length
-    ul
+    div.card-columns
       each category in categoryList
-        li
-          a(href=category.url) #{category.name}
+        div.card
+          div.card-body
+            h5.card-title
+              a(href=category.url, class='text-dark') #{category.name}
   else
     p There are no categories yet.
