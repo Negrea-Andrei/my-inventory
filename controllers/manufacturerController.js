@@ -3,7 +3,6 @@ const product = require('../models/product');
 const asyncHandler = require('express-async-handler');
 const { body, validationResult } = require("express-validator");
 
-// Display list of all manufacturer in manufacturer
 exports.manufacturerList = asyncHandler(async (req, res, next) => {
   const allManufacturers = await manufacturer.find({}, "name").exec();
 
@@ -32,7 +31,6 @@ exports.manufacturerDetail = asyncHandler(async (req, res, next) => {
       productList: products,
     });
   } catch (err) {
-    // Handle other errors
     next(err);
   }
 });
@@ -125,7 +123,6 @@ exports.manufacturerDeletePost = asyncHandler(async (req, res) => {
       return;
     }
 
-    // Delete the manufacturer if no associated products
     await manufacturer.deleteOne({ _id: manufacturerId });
     res.redirect('/store/manufacturers');
   } catch (err) {
@@ -134,20 +131,16 @@ exports.manufacturerDeletePost = asyncHandler(async (req, res) => {
   }
 });
 
-// Display manufacturer update form on GET
 exports.manufacturerUpdateGet = asyncHandler(async (req, res) => {
   try {
-    // Fetch the manufacturer details for the given ID
     const manufacturerDetails = await manufacturer.findById(req.params.id).exec();
 
     if (!manufacturerDetails) {
-      // Manufacturer not found
       const err = new Error('Manufacturer not found');
       err.status = 404;
       return next(err);
     }
 
-    // Render the manufacturer update form with fetched data
     res.render('manufacturerForm', {
       title: `Update ${manufacturerDetails.name}`,
       manufacturer: manufacturerDetails,
@@ -158,7 +151,6 @@ exports.manufacturerUpdateGet = asyncHandler(async (req, res) => {
   }
 });
 
-// Handle manufacturer update on POST
 exports.manufacturerUpdatePost = [
   body('name', 'Manufacturer name must contain at least 3 characters').trim().isLength({ min: 3 }),
   body('description', 'Description must contain at least 3 characters').trim().isLength({ min: 3 }),
@@ -168,7 +160,6 @@ exports.manufacturerUpdatePost = [
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
-        // There are validation errors, re-render the form with errors
         return res.render('manufacturerForm', {
           title: `Update ${req.body.name}`,
           manufacturer: req.body,
@@ -176,17 +167,15 @@ exports.manufacturerUpdatePost = [
         });
       }
 
-      // Update the manufacturer with new data
       const updatedManufacturer = await manufacturer.findByIdAndUpdate(
         req.params.id,
         {
           name: req.body.name,
           description: req.body.description,
         },
-        { new: true } // Return the updated document
+        { new: true }
       );
 
-      // Redirect to the manufacturer detail page after a successful update
       res.redirect(`/store/manufacturer/${updatedManufacturer._id}`);
     } catch (err) {
       console.error(err);
