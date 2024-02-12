@@ -16,13 +16,11 @@ exports.categoryDetail = asyncHandler(async (req, res) => {
     category.findById(req.params.id).exec(),
     product.find({ category: req.params.id }, "name description").exec(),
   ]);
-
   if (categories === null) {
     const err = new Error("Category not found");
     err.status = 404;
     return next(err);
   }
-
   res.render("categoryDetails", {
     title: "Category",
     category: categories,
@@ -85,7 +83,7 @@ exports.categoryDeleteGet = asyncHandler(async (req, res) => {
       res.render('categoryDelete', {
         title: 'Delete Category',
         category: theCategory,
-        productList: [],
+        productList: [], // Ensure productList is an array
       });
     }
   } catch (err) {
@@ -94,6 +92,7 @@ exports.categoryDeleteGet = asyncHandler(async (req, res) => {
   }
 });
 
+// Handle Category delete on POST
 exports.categoryDeletePost = asyncHandler(async (req, res) => {
   try {
     const categoryId = req.params.id;
@@ -118,6 +117,7 @@ exports.categoryDeletePost = asyncHandler(async (req, res) => {
       return;
     }
 
+    // Delete the category if no associated products
     await category.deleteOne({ _id: categoryId });
     res.redirect('/store/categories');
   } catch (err) {
@@ -129,6 +129,7 @@ exports.categoryDeletePost = asyncHandler(async (req, res) => {
 exports.categoryUpdateGet = asyncHandler(async (req, res) => {
   const categoryId = req.params.id;
 
+  // Fetch category details
   const categoryDetails = await category.findById(categoryId);
 
   if (!categoryDetails) {
@@ -142,6 +143,7 @@ exports.categoryUpdateGet = asyncHandler(async (req, res) => {
   });
 });
 
+// Handle category update on POST
 exports.categoryUpdatePost = [
   body("name", "Category name must contain at least 3 characters").trim().isLength({ min: 3 }),
 
@@ -160,14 +162,16 @@ exports.categoryUpdatePost = [
       return;
     }
 
+    // Update the category with new data
     const updatedCategory = await category.findByIdAndUpdate(
       categoryId,
       {
         name: req.body.name,
       },
-      { new: true }
+      { new: true } // Return the updated document
     );
 
+    // Redirect to the category detail page after a successful update
     res.redirect(updatedCategory.url);
   }),
 ];

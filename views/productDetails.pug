@@ -48,6 +48,8 @@ block content
 
     if product.img
       img(src=`data:image/jpeg;base64,${product.img.toString('base64')}`, alt="Product Image", class='img-fluid mt-4')
+    else
+      img(src='/images/missing_image.png', alt="Missing Image", class='img-fluid mt-4')
 
     hr(class='mt-4')
 

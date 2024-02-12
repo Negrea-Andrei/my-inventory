@@ -10,7 +10,7 @@ const ProductSchema = new Schema({
     quantity: { type: Number, min: 0, max: 4000, required: true },
     category: [{ type: Schema.Types.ObjectId, ref: "Category", required: true }],
     location: [{ type: Schema.Types.ObjectId, ref: "Location", required: true }],
-    img: { type: Buffer, required: true }
+    img: { type: Buffer}
 })
 
 ProductSchema.virtual("url").get(function () {
