@@ -4,6 +4,15 @@
 
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #f8f9fa;
+}
+
+.navbar-light {
+  background-color: #f0f0f0;
+}
+
+.navbar-nav .nav-link:hover {
+  font-weight: bold; 
 }
 
 a {
