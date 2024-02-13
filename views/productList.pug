@@ -7,11 +7,11 @@ block content
     div.row
       each product, index in productList
         div.col-lg-3.col-md-4.col-sm-6
-          div.card.mb-4
+          div.card.mb-4(style='background-color: #f8f9fa;')
             if product.img
-              img(src=`data:image/jpeg;base64,${product.img.toString('base64')}`, alt=product.name, class='card-img-top img-fluid')
+              img(src=`data:image/jpeg;base64,${product.img.toString('base64')}`, alt=product.name, class='card-img-top img-fluid', style='height: 150px; object-fit: cover;')
             else
-              img(src='/images/missing_image.png', alt="Missing Image", class='card-img-top img-fluid')
+              img(src='/images/missing_image.png', alt="Missing Image", class='card-img-top img-fluid', style='height: 150px; object-fit: cover;')
             div.card-body
               a(href=product.url, class='d-block h4 mb-1') #{product.name}
               p Manufactured by: 
