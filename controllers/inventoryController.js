@@ -16,7 +16,7 @@ exports.index = asyncHandler(async (req, res, next) => {
 
   // Rendering the index page with counts of documents
   res.render("index", {
-    title: "Store",
+    title: "Inventory",
     product_number: numProduct,
     manufacturer_number: numManufacturer,
     location_number: numLocation,
