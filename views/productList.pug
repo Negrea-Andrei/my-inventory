@@ -3,9 +3,8 @@ extends layout
 block content
   h1= title
   if productList.length
-    - let productsInRow = 4
     each product, index in productList
-      if index % productsInRow === 0
+      if index % 4 === 0
         div.row
       div.col-lg-3.col-md-4.col-sm-6
         div.card.mb-4
@@ -16,13 +15,13 @@ block content
             p Quantity: 
               span.badge(style=`background-color: ${product.quantity === 0 ? 'red' : (product.quantity < 15 ? 'orange' : '#3aff3a')};` class='h6') #{product.quantity}
             if product.quantity === 0
-              p.text-danger.h6 Status: Not in stock
+              p.text-danger.h6 - Status: Not in stock
             else if product.quantity < 15
-              p.text-warning.h6 Status: Few in stock
+              p.text-warning.h6 - Status: Few in stock
             else
-              p.text-success.h6 Status: Available
+              p.text-success.h6 - Status: Available
 
-      if (index + 1) % productsInRow === 0 || index === productList.length - 1
-        div.w-100
+      if (index + 1) % 4 === 0 || index === productList.length - 1
+        div.d-sm-none.w-100.d-md-block
   else
     p There are no products.
