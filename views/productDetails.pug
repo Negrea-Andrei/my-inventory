@@ -4,52 +4,55 @@ block content
   div.container
     h1(class='mt-4') Title: #{product.name}
 
-    div.card.mt-4
-      div.card-body
-        h5.card-title Manufacturer:
-        a(href=manufacturer.url) #{manufacturer.name}
+    div.row.mt-4
+      div.col-md-6
+        if product.img
+          img(src=`data:image/jpeg;base64,${product.img.toString('base64')}`, alt="Product Image", class='img-fluid mt-4')
+        else
+          img(src='/images/missing_image.png', alt="Missing Image", class='img-fluid mt-4')
 
-    div.card.mt-4
-      div.card-body
-        h5.card-title Category:
-        each cat in product.category
-          a(href=cat.url) #{cat.name} 
-          | -&nbsp;
+      div.col-md-6
+        div.card
+          div.card-body
+            h5.card-title Manufacturer:
+            a(href=manufacturer.url) #{manufacturer.name}
 
-    div.card.mt-4
-      div.card-body
-        h5.card-title Description:
-        p.card-text #{product.description}
+        div.card.mt-4
+          div.card-body
+            h5.card-title Category:
+            each cat in product.category
+              a(href=cat.url) #{cat.name}
+              | -&nbsp;
 
-    div.card.mt-4
-      div.card-body
-        h5.card-title Locations:
-        each loc in product.location
-          p.card-text
-            | #{loc.name}
-            | located at: #{loc.address}
+        div.card.mt-4
+          div.card-body
+            h5.card-title Description:
+            p.card-text #{product.description}
 
-    div.card.mt-4
-      div.card-body
-        h5.card-title Quantity:
-        p.card-text #{product.quantity}
+        div.card.mt-4
+          div.card-body
+            h5.card-title Locations:
+            each loc in product.location
+              p.card-text
+                | #{loc.name}
+                | located at: #{loc.address}
 
-    div.card.mt-4
-      div.card-body
-        h5.card-title Status:
-        p.card-text
-          | 
-          if product.quantity === 0
-            | Not in stock
-          else if product.quantity < 15
-            | Few in stock
-          else
-            | Available
+        div.card.mt-4
+          div.card-body
+            h5.card-title Quantity:
+            p.card-text #{product.quantity}
 
-    if product.img
-      img(src=`data:image/jpeg;base64,${product.img.toString('base64')}`, alt="Product Image", class='img-fluid mt-4')
-    else
-      img(src='/images/missing_image.png', alt="Missing Image", class='img-fluid mt-4')
+        div.card.mt-4
+          div.card-body
+            h5.card-title Status:
+            p.card-text
+              | 
+              if product.quantity === 0
+                | Not in stock
+              else if product.quantity < 15
+                | Few in stock
+              else
+                | Available
 
     hr(class='mt-4')
 
