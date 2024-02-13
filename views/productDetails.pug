@@ -39,10 +39,10 @@ block content
         h5.card-title Status:
         p.card-text
           | 
-          if product.quantity < 10
-            | Few in stock
-          else if product.quantity === 0
+          if product.quantity === 0
             | Not in stock
+          else if product.quantity < 15
+            | Few in stock
           else
             | Available
 
