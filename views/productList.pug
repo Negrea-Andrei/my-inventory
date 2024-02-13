@@ -10,6 +10,8 @@ block content
           div.card.mb-4
             if product.img
               img(src=`data:image/jpeg;base64,${product.img.toString('base64')}`, alt=product.name, class='card-img-top img-fluid')
+            else
+              img(src='/images/missing_image.png', alt="Missing Image", class='card-img-top img-fluid')
             div.card-body
               a(href=product.url, class='d-block h4 mb-1') #{product.name}
               p Manufactured by: 
