@@ -2,7 +2,7 @@ extends layout
 
 block content
   div.container
-    h1(class='mt-4') Title: #{product.name}
+    h1(class='mt-4') #{product.name}
 
     div.row.mt-4
       div.col-md-6
@@ -21,7 +21,7 @@ block content
           div.card-body
             h5.card-title Category:
             each cat in product.category
-              a(href=cat.url) #{cat.name}
+              a(href=cat.url) #{cat.name} 
               | -&nbsp;
 
         div.card.mt-4
