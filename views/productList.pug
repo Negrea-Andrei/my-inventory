@@ -13,10 +13,10 @@ block content
           | Quantity: 
           span.badge(style=`background-color: ${product.quantity === 0 ? 'red' : (product.quantity < 15 ? 'orange' : '#3aff3a')};` class='h6') #{product.quantity}
           br
-          if product.quantity < 10
-            span.text-warning.h6 - Status: Few in stock
-          else if product.quantity === 0
+          if product.quantity === 0
             span.text-danger.h6 - Status: Not in stock
+          else if product.quantity < 15
+            span.text-warning.h6 - Status: Few in stock
           else
             span.text-success.h6 - Status: Available
   else
