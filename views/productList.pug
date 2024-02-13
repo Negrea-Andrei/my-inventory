@@ -3,8 +3,9 @@ extends layout
 block content
   h1= title
   if productList.length
+    - let productsInRow = 4
     each product, index in productList
-      if index % 4 === 0
+      if index % productsInRow === 0
         div.row
       div.col-lg-3.col-md-4.col-sm-6
         div.card.mb-4
@@ -21,7 +22,7 @@ block content
             else
               p.text-success.h6 Status: Available
 
-      if (index + 1) % 4 === 0 || index === productList.length - 1
+      if (index + 1) % productsInRow === 0 || index === productList.length - 1
         div.w-100
   else
     p There are no products.
