@@ -20,7 +20,33 @@ block content
               p.text-warning.h6 - Status: Few in stock
             else
               p.text-success.h6 - Status: Available
+
       if (index + 1) % 4 === 0 || index === productList.length - 1
         div.w-100
+
   else
     p There are no products.
+
+script.
+  $(window).on('resize', function() {
+    adjustProductGrid();
+  });
+
+  $(document).ready(function() {
+    adjustProductGrid();
+  });
+
+  function adjustProductGrid() {
+    var windowWidth = $(window).width();
+    var colClass;
+
+    if (windowWidth >= 992) {
+      colClass = 'col-lg-3';
+    } else if (windowWidth >= 768) {
+      colClass = 'col-md-4';
+    } else {
+      colClass = 'col-sm-6';
+    }
+
+    $('.col-lg-3, .col-md-4, .col-sm-6').removeClass('col-lg-3 col-md-4 col-sm-6').addClass(colClass);
+  }
