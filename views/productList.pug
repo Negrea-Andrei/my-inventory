@@ -3,21 +3,24 @@ extends layout
 block content
   h1= title
   if productList.length
-    ul.list-group
-      each product in productList
-        li.list-group-item
-          a(href=product.url, class='d-block h4 mb-1') #{product.name}
-          | Manufactured by: 
-          a(href=product.manufacturer.url) #{product.manufacturer.name}
-          br
-          | Quantity: 
-          span.badge(style=`background-color: ${product.quantity === 0 ? 'red' : (product.quantity < 15 ? 'orange' : '#3aff3a')};` class='h6') #{product.quantity}
-          br
-          if product.quantity === 0
-            span.text-danger.h6 - Status: Not in stock
-          else if product.quantity < 15
-            span.text-warning.h6 - Status: Few in stock
-          else
-            span.text-success.h6 - Status: Available
+    each product, index in productList
+      if index % 4 === 0
+        div.row
+      div.col-md-3
+        div.card.mb-4
+          div.card-body
+            a(href=product.url, class='d-block h4 mb-1') #{product.name}
+            p Manufactured by: 
+              a(href=product.manufacturer.url) #{product.manufacturer.name}
+            p Quantity: 
+              span.badge(style=`background-color: ${product.quantity === 0 ? 'red' : (product.quantity < 15 ? 'orange' : '#3aff3a')};` class='h6') #{product.quantity}
+            if product.quantity === 0
+              p.text-danger.h6 - Status: Not in stock
+            else if product.quantity < 15
+              p.text-warning.h6 - Status: Few in stock
+            else
+              p.text-success.h6 - Status: Available
+      if (index + 1) % 4 === 0 || index === productList.length - 1
+        div.w-100
   else
     p There are no products.
