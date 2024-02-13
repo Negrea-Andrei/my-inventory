@@ -11,7 +11,7 @@ block content
           a(href=product.manufacturer.url) #{product.manufacturer.name}
           br
           | Quantity: 
-          span.badge(style=`background-color: ${product.quantity < 10 ? 'orange' : (product.quantity === 0 ? 'red' : 'green')};` class='h6') #{product.quantity}
+          span.badge(style=`background-color: ${product.quantity < 10 ? 'orange' : (product.quantity === 0 ? 'red' : '#3aff3a')};` class='h6') #{product.quantity}
           br
           if product.quantity < 10
             span.text-warning.h6 - Status: Few in stock
