@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const ManufacturerSchema = new Schema({
     name: { type: String, required: true, maxLength: 100 },
-    description: { type: String, required: true, maxLength: 100 },
+    description: { type: String, required: true, maxLength: 800 },
 })
 
 ManufacturerSchema.virtual("url").get(function () {
