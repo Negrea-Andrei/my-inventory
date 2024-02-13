@@ -24,8 +24,3 @@ a {
   padding: 0;
   list-style: none;
 }
-
-.card:hover .card-img-top {
-  height: 100%;
-  object-fit: contain;
-}
