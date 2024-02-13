@@ -53,7 +53,7 @@ exports.manufacturerCreatePost = [
       description: req.body.description,
     });
 
-    if (!errors.isEmpty()) {
+    if (!errors) {
       res.render("manufacturerForm", {
         title: "Create Manufacturer",
         manufacturer: manufacturerCreate,
