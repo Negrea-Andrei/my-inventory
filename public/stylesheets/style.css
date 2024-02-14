@@ -37,7 +37,5 @@ footer {
  }
 
 .footer-logo {
-      position: absolute;
-      right: 10px;
       max-width: 100px;
 }
