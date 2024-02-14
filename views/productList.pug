@@ -16,7 +16,7 @@ block content
               a(href=product.url, class='d-block h4 mb-1') #{product.name}
               p Manufactured by: 
                 a(href=product.manufacturer.url) #{product.manufacturer.name}
-              h5.font-weight-bold Price: #{product.price}
+              h5.font-weight-bold Price: #{product.price} lei
               p Quantity: 
                 span.badge(style=`background-color: ${product.quantity === 0 ? 'red' : (product.quantity < 15 ? 'orange' : '#3aff3a')};` class='h6') #{product.quantity}
               if product.quantity === 0
