@@ -19,6 +19,11 @@ block content
 
         div.card.mt-4
           div.card-body
+            h5.card-title Price:
+            p.card-text #{product.price} lei
+
+        div.card.mt-4
+          div.card-body
             h5.card-title Category:
             each cat in product.category
               a(href=cat.url) #{cat.name} 
