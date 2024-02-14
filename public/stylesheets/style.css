@@ -35,3 +35,9 @@ footer {
   color: #555;
   font-size: 14px;
  }
+
+.footer-logo {
+      position: absolute;
+      right: 10px;
+      max-width: 100px;
+}
