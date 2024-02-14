@@ -24,3 +24,14 @@ a {
   padding: 0;
   list-style: none;
 }
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background-color: #e0e0e0;
+  padding: 10px;
+  color: #555;
+  font-size: 14px;
+ }
