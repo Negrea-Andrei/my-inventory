@@ -1,3 +1,5 @@
+![Demo](public/images/inventory_readme.gif)
+
 # Inventory Management
 
 This project is an inventory management system built using Node.js, Express, and Bootstrap. It provides functionality to **create, read, update, and delete** entries for products, categories, locations, and manufacturers within an inventory. The project uses a modular structure with separate controllers for each entity and utilizes Bootstrap for a responsive and user-friendly interface.
