@@ -7,7 +7,7 @@ This project is an inventory management system built using Node.js, Express, and
 ## Demo
 **Disclaimer:** It may take up to 50 seconds to access the page for the live demo. I used Render, which is a free hosting web service for web applications.
 
-Check out the live version [here](https://andrei-inventory.onrender.com/store) ⚡⚡⚡
+Check out the live version ⚡⚡⚡ [here](https://andrei-inventory.onrender.com/store) ⚡⚡⚡
 
 ## Getting Started
 
