@@ -1,4 +1,4 @@
-![Demo](public/images/inventory_readme.gif)
+![Demo](images/snake_readme.gif)
 
 # Inventory Management
 
