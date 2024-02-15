@@ -4,6 +4,11 @@
 
 This project is an inventory management system built using Node.js, Express, and Bootstrap. It provides functionality to **create, read, update, and delete** entries for products, categories, locations, and manufacturers within an inventory. The project uses a modular structure with separate controllers for each entity and utilizes Bootstrap for a responsive and user-friendly interface.
 
+## Demo
+**Disclaimer:** It may take up to 50 seconds to access the page for the live demo. I used Render, which is a free hosting web service for web applications.
+
+Check out the live version [here](https://andrei-inventory.onrender.com/store) ⚡⚡⚡
+
 ## Getting Started
 
 To get started with the project, follow these steps:
